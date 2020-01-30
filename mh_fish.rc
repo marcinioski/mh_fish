@@ -1,0 +1,36 @@
+# file: .mh_fish.rc
+# author: marcin.hujdus
+# 
+
+# cd aliases
+alias cddown "cd /home/(whoami)/Downloads"
+alias cddocs "cd /home/(whoami)/Documents"
+alias cdremotes "cd /home/(whoami)/remote_repos"
+alias cdcode "cd /home/(whoami)/code"
+
+# git aliases
+alias gbr "git branch"
+alias gco "git checkout"
+alias gpush "git push"
+alias gpull "git pull"
+alias gtree "git log --graph --oneline --decorate"
+alias gtreea "gtree --all"
+alias gst "git status"
+alias glg "git log"
+
+set MY_NAME (whoami)
+
+#developmet
+
+#lb
+source /home/(whoami)/.mh_lb
+
+#wb
+source /home/(whoami)/.mh_wb
+
+#environments
+set -gx PATH $PATH /usr/local/go/bin
+set -gx GOPATH /usr/local/go/pkg
+set -gx GOBIN /usr/local/go/bin
+set -gx DOTNET_ROOT /home/marcin/dotnet
+set -gx PATH $PATH /home/marcin/dotnet

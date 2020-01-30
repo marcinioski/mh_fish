@@ -1,0 +1,97 @@
+# file .mh_wb
+# author marcin.hujdus
+# brief: workbook, allows to create projects information, tasks and change them status
+
+set EDITOR nvim.appimage
+set WB_PATH /home/(whoami)/wb
+
+set STATUS_DONE "DONE"
+set STATUS_WIP "WIP"
+set STATUS_PLAN "PLAN"
+
+function new_project
+	echo "Creating new project: $argv[2]"
+	mkdir -p $WB_PATH/$argv[2]/tasks
+	mkdir -p $WB_PATH/$argv[2]/source
+	mkdir -p $WB_PATH/$argv[2]/docs
+
+	touch $WB_PATH/$argv[2]/README.md
+	read -P "Edit now README.md? Y/n " choice
+	if test "$choice" = "Y"
+		eval $EDITOR $WB_PATH/$argv[2]/README.md
+	end
+	read -P "Initialize git repository? Y/n " choice
+	if test "$choice" = "Y"
+		cd $WB_PATH/$argv[2]
+		git init
+		git add --all
+		git commit
+		cd -
+	end
+end # new_project
+
+function delete_project
+	read -P "Are you sure to delete project $argv[2] ? Y/n: " choice
+	if test "$choice" = "Y"
+		rm -rf $WB_PATH/$argv[2]
+	end
+end #delete_project
+
+function new_task
+	if test (count $argv) -gt 2
+		echo "Creating new task: $argv[3]"
+		touch $WB_PATH/$argv[2]/tasks/$argv[3]
+	else
+		echo "Improper number of arguments"
+	end
+end # new_task
+
+function edit_task
+	if test (count $argv) -gt 2
+		eval $EDITOR $WB_PATH/$argv[2]/tasks/$argv[3]
+	else
+		echo "Improper number of arguments"
+	end
+end # edit_task
+
+function show_specific_project
+	if test -d $WB_PATH/$argv[2]
+		ls -1 $WB_PATH/$argv[2]
+	end
+end # show_specific_project
+
+function show_projects
+	ls -1 $WB_PATH
+end # show_projects
+
+function wb
+	if count $argv > /dev/null
+		if test "$argv[1]" = "show"
+			if test "$argv[2]" = "all"
+				show_projects
+			else
+				show_specific_project $argv			
+			end
+
+		else if test "$argv[1]" = "new"
+			if test -d $WB_PATH/$argv[2]
+				new_task $argv
+			else
+				new_project $argv
+			end
+
+		else if test "$argv[1]" = "edit"
+			if test -d $WB_PATH/$argv[2]
+				edit_task $argv
+			end
+		else if test "$argv[1]" = "delete"
+			if test -d $WB_PATH/$argv[2]
+				delete_project $argv
+			end
+		else if test -d $WB_PATH/$argv[1]
+			cd $WB_PATH/$argv[1]
+		else
+			echo "Unknown command"
+		end
+	end #if count
+end #wb
