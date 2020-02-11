@@ -9,18 +9,11 @@ alias cdremotes "cd /home/(whoami)/remote_repos"
 alias cdcode "cd /home/(whoami)/code"
 
 # git aliases
-alias gbr "git branch"
-alias gco "git checkout"
-alias gpush "git push"
-alias gpull "git pull"
-alias gtree "git log --graph --oneline --decorate"
-alias gtreea "gtree --all"
-alias gst "git status"
-alias glg "git log"
 
 set MY_NAME (whoami)
 
-#developmet
+#git
+source /home/(whoami)/.mh_fish/mh_git
 
 #lb
 source /home/(whoami)/.mh_fish/mh_lb
